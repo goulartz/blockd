@@ -10,13 +10,13 @@ CPU = subprocess.check_output(["technodns", "system", "threads"]).decode().strip
 MEMORY = subprocess.check_output(["technodns", "system", "memory", "--total"]).decode().strip()
 
 status_output = subprocess.check_output(["unbound-control", "status"]).decode()
+output_lines = status_output.split('\n')
 
-for line in status_output.split('\n'):
-    if "is running" in line:
-        break
-    else:
-        print("Servidor com Broken Pipe.")
-        exit(1)
+if any("is running" in line for line in output_lines):
+    break
+else:
+    print("Servidor com Broken Pipe.")
+    exit(1)
 
 def verificar_cpu():
     global CPU
