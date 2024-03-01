@@ -9,6 +9,14 @@ VERSION_F = "/usr/local/etc/unbound/version_api.conf"
 CPU = subprocess.check_output(["technodns", "system", "threads"]).decode().strip()
 MEMORY = subprocess.check_output(["technodns", "system", "memory", "--total"]).decode().strip()
 
+status_output = subprocess.check_output(["unbound-control", "status"]).decode()
+
+for line in status_output.split('\n'):
+    if "is running" in line:
+        pass
+else:
+    print("Servidor com Broken Pipe.")
+    exit(1)
 
 def verificar_cpu():
     global CPU
@@ -81,8 +89,6 @@ RRSET = MEMORY // 3
 
 subprocess.run(["/usr/local/bin/curl", "-s", "-X", "POST", "http://localhost/dns/tuning/", "-H", "Content-Type: application/x-www-form-urlencoded", "--data-raw", f"num_threads={CPU}&msg_cache_size={MSG}m&rrset_cache_size={RRSET}m&prefetch=yes&minimal_responses=yes&qname_minimisation=yes&do_udp=yes&do_ip4=yes&do_ip6=yes&custom_config={custom_v_string}&action=save"], stdout=subprocess.DEVNULL)
 
-#subprocess.run(["/usr/local/bin/technodns/technodns", "recursive", "rewrite"], stdout=subprocess.DEVNULL)
-#subprocess.run(["/usr/local/sbin/unbound-control", "reload"], stdout=subprocess.DEVNULL)
 try:
     subprocess.run(["/usr/local/bin/technodns/technodns", "recursive", "rewrite"], check=True, stdout=subprocess.DEVNULL)
 except subprocess.CalledProcessError as e:
