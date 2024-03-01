@@ -9,7 +9,12 @@ VERSION_F = "/usr/local/etc/unbound/version_api.conf"
 CPU = subprocess.check_output(["technodns", "system", "threads"]).decode().strip()
 MEMORY = subprocess.check_output(["technodns", "system", "memory", "--total"]).decode().strip()
 
-status_output = subprocess.check_output(["unbound-control", "status"]).decode()
+try:
+    status_output = subprocess.check_output(["unbound-control", "status"]).decode()
+except subprocess.CalledProcessError:
+    print("Servidor com Broken Pipe.")
+    exit(1)
+    
 output_lines = status_output.split('\n')
 
 if any("is running" in line for line in output_lines):
