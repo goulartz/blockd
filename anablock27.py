@@ -45,7 +45,7 @@ VERSION = subprocess.check_output(["/usr/local/bin/curl", "-k", "-s", APIURL_VER
 if os.path.isfile(VERSION_F) and os.path.getsize(VERSION_F) > 0:
     with open(VERSION_F, 'r') as f:
         if VERSION == f.read().strip():
-            print("Tabela sem alterações.")
+            print("Tabela sem alteracoes.")
             exit(0)
 else:
     with open(VERSION_F, 'w') as f:
@@ -61,7 +61,7 @@ if os.path.isfile(CONF_UNBOUND_T) and os.path.getsize(CONF_UNBOUND_T) > 0:
         f.write(unbound_conf + "server:\n" + conf_unbound_t)
     os.rename(CONF_UNBOUND_T, CONF_UNBOUND)
 else:
-    print("API não retornou dados.")
+    print("API nao retornou dados.")
     exit(1)
 
 CHECKFILE = "/usr/local/sbin/unbound-checkconf /tmp/unbound-test.conf"
@@ -73,7 +73,7 @@ if "no errors" in result.lower():
     else:
         MEMORY //= 2
 else:
-    print("Arquivo de configuração Unbound contém erros.")
+    print("Arquivo de configuracao Unbound contem erros.")
     exit(1)
 
 MSG = MEMORY // 6
