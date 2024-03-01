@@ -11,6 +11,14 @@ VERSION_F = "/usr/local/etc/unbound/version_api.conf"
 CPU = subprocess.check_output(["technodns", "system", "threads"]).strip()
 MEMORY = subprocess.check_output(["technodns", "system", "memory", "--total"]).strip()
 
+status_output = subprocess.check_output(["unbound-control", "status"]).decode()
+
+for line in status_output.split('\n'):
+    if "is running" in line:
+        pass
+else:
+    print("Servidor com Broken Pipe.")
+    exit(1)
 
 def verificar_cpu():
     global CPU
