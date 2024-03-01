@@ -16,9 +16,9 @@ status_output = subprocess.check_output(["unbound-control", "status"]).decode()
 for line in status_output.split('\n'):
     if "is running" in line:
         pass
-else:
-    print("Servidor com Broken Pipe.")
-    exit(1)
+    else:
+        print("Servidor com Broken Pipe.")
+        exit(1)
 
 def verificar_cpu():
     global CPU
