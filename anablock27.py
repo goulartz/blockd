@@ -15,7 +15,7 @@ status_output = subprocess.check_output(["unbound-control", "status"]).decode()
 output_lines = status_output.split('\n')
 
 if any("is running" in line for line in output_lines):
-    break
+    pass
 else:
     print("Servidor com Broken Pipe.")
     exit(1)
