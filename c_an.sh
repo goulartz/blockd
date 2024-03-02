@@ -2,8 +2,8 @@
 
 # Verificar a versão do sistema operacional
 if uname -a | grep -q "13."; then
-    curl -s -LJO https://github.com/goulartz/anablock_technodns/raw/main/anablock.py | python3.8 anablock.py
+    /usr/local/bin/curl -s -LJO https://github.com/goulartz/anablock_technodns/raw/main/anablock.py | /usr/local/bin/python3.8 /usr/home/admin/anablock.py
 else
-    curl -s -LJO https://github.com/goulartz/anablock_technodns/raw/main/anablock27.py | python2.7 anablock27.py
+    /usr/local/bin/curl -s -LJO https://github.com/goulartz/anablock_technodns/raw/main/anablock27.py | /usr/local/bin/python2.7 /usr/home/admin/anablock27.py
 fi
 
