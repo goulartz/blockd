@@ -10,7 +10,7 @@ CPU = subprocess.check_output(["technodns", "system", "threads"]).decode().strip
 MEMORY = subprocess.check_output(["technodns", "system", "memory", "--total"]).decode().strip()
 
 try:
-    status_output = subprocess.check_output(["unbound-control", "status"]).decode()
+    status_output = subprocess.check_output(["/usr/local/sbin/unbound-control", "status"]).decode()
 except subprocess.CalledProcessError:
     print("Servidor com Broken Pipe.")
     exit(1)
