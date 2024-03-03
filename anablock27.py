@@ -2,6 +2,7 @@
 
 import os
 import subprocess
+import datetime
 
 APIURL_UNBOUND = "https://api.anablock.net.br/domains/all?output=unbound"
 CONF_UNBOUND = "/usr/local/etc/unbound/anablock.conf"
@@ -15,7 +16,7 @@ VERSION = subprocess.check_output(["/usr/local/bin/curl", "-k", "-s", APIURL_VER
 if os.path.isfile(VERSION_F) and os.path.getsize(VERSION_F) > 0:
     with open(VERSION_F, 'r') as f:
         if VERSION == f.read().strip():
-            print("Tabela sem alterações.")
+            print("{}: Tabela sem alterações.".format(datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')))
             exit(0)
         else:
             with open(VERSION_F, 'w') as f:
@@ -27,7 +28,7 @@ else:
 try:
     status_output = subprocess.check_output(["/usr/local/sbin/unbound-control", "status"]).decode()
 except subprocess.CalledProcessError:
-    print("Servidor com Broken Pipe.")
+    print("{}: Servidor com Broken Pipe.".format(datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S')))
     exit(1)
 
 output_lines = status_output.split('\n')
@@ -35,7 +36,7 @@ output_lines = status_output.split('\n')
 if any("is running" in line for line in output_lines):
     pass
 else:
-    print("Servidor com Broken Pipe.")
+    print("{}: Servidor com Broken Pipe.".format(datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S')))
     exit(1)
 
 def verificar_cpu():
@@ -79,7 +80,7 @@ if os.path.isfile(CONF_UNBOUND_T) and os.path.getsize(CONF_UNBOUND_T) > 0:
         f.write(unbound_conf + "server:\n" + conf_unbound_t)
     os.rename(CONF_UNBOUND_T, CONF_UNBOUND)
 else:
-    print("API não retornou dados.")
+    print("{}: API não retornou dados.".format(datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S')))
     exit(1)
 
 CHECKFILE = "/usr/local/sbin/unbound-checkconf /tmp/unbound-test.conf"
@@ -92,7 +93,7 @@ if output and "no errors" in output.lower():
     else:
         MEMORY //= 2
 else:
-    print("Arquivo de configuração Unbound contém erros.")
+    print("{}: Arquivo de configuração Unbound contém erros.".format(datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S')))
     exit(1)
 
 MSG = MEMORY // 6
@@ -103,9 +104,10 @@ subprocess.call(["/usr/local/bin/curl", "-s", "-X", "POST", "http://localhost/dn
 try:
     subprocess.check_call(["/usr/local/bin/technodns/technodns", "recursive", "rewrite"], stdout=subprocess.PIPE)
 except subprocess.CalledProcessError as e:
-    print("Erro ao executar o comando:", e)
+    print("{}: Erro ao executar comando 'technodns recursive rewrite'.".format(datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S')))
 
 try:
     subprocess.check_call(["/usr/local/sbin/unbound-control", "reload"], stdout=subprocess.PIPE)
+    print("{}: Tabela de bloqueio atualizada.".format(datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S')))
 except subprocess.CalledProcessError as e:
-    print("Erro ao executar o comando:", e)
+    print("{}: Erro ao executar comando 'unbound-control reload'.".format(datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S')))
