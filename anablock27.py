@@ -20,7 +20,10 @@ if os.path.isfile(VERSION_F) and os.path.getsize(VERSION_F) > 0:
         else:
             with open(VERSION_F, 'w') as f:
                 f.write(VERSION)
-                
+else:
+  with open(VERSION_F, 'w') as f:
+    f.write(VERSION)
+      
 try:
     status_output = subprocess.check_output(["/usr/local/sbin/unbound-control", "status"]).decode()
 except subprocess.CalledProcessError:
