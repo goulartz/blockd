@@ -20,6 +20,9 @@ if os.path.exists(VERSION_F):
         else:
           with open(VERSION_F, 'w') as f:
             f.write(VERSION)
+else:
+  with open(VERSION_F, 'w') as f:
+    f.write(VERSION)
 
 try:
     status_output = subprocess.check_output(["/usr/local/sbin/unbound-control", "status"]).decode()
