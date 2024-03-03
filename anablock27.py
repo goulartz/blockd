@@ -11,6 +11,16 @@ VERSION_F = "/usr/local/etc/unbound/version_api.conf"
 CPU = subprocess.check_output(["technodns", "system", "threads"]).strip()
 MEMORY = subprocess.check_output(["technodns", "system", "memory", "--total"]).strip()
 
+VERSION = subprocess.check_output(["/usr/local/bin/curl", "-k", "-s", APIURL_VERSION]).strip()
+if os.path.isfile(VERSION_F) and os.path.getsize(VERSION_F) > 0:
+    with open(VERSION_F, 'r') as f:
+        if VERSION == f.read().strip():
+            print("Tabela sem alterações.")
+            exit(0)
+        else:
+            with open(VERSION_F, 'w') as f:
+                f.write(VERSION)
+                
 try:
     status_output = subprocess.check_output(["/usr/local/sbin/unbound-control", "status"]).decode()
 except subprocess.CalledProcessError:
@@ -55,16 +65,6 @@ def processar_custom_v():
 
 processar_custom_v()
 verificar_cpu()
-
-VERSION = subprocess.check_output(["/usr/local/bin/curl", "-k", "-s", APIURL_VERSION]).strip()
-if os.path.isfile(VERSION_F) and os.path.getsize(VERSION_F) > 0:
-    with open(VERSION_F, 'r') as f:
-        if VERSION == f.read().strip():
-            print("Tabela sem alterações.")
-            exit(0)
-else:
-    with open(VERSION_F, 'w') as f:
-        f.write(VERSION)
 
 subprocess.call(["/usr/local/bin/curl", "-k", "-s", APIURL_UNBOUND, "-o", CONF_UNBOUND_T])
 if os.path.isfile(CONF_UNBOUND_T) and os.path.getsize(CONF_UNBOUND_T) > 0:
