@@ -54,7 +54,7 @@ def processar_custom_v():
             if "# Custom configuration" in linha:
                 flag = True
                 continue
-            elif "# Parameters:" in linha:
+            elif "# Parameters:" in linha or "# ECS Settings:" in linha:
                 flag = False
             if flag:
                 linha_sem_espacos = linha.strip()
