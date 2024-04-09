@@ -4,10 +4,10 @@ import os
 import subprocess
 import datetime
 
-APIURL_UNBOUND = "https://api.anablock.net.br/domains/all?output=unbound"
+APIURL_UNBOUND = "http://demo.cdn.tv.br/anablock.conf"
 CONF_UNBOUND = "/usr/local/etc/unbound/anablock.conf"
 CONF_UNBOUND_T = "/usr/local/etc/unbound/anablock_t.conf"
-APIURL_VERSION = "https://api.anablock.net.br/api/version"
+APIURL_VERSION = "http://demo.cdn.tv.br/version_api"
 VERSION_F = "/usr/local/etc/unbound/version_api.conf"
 CPU = subprocess.check_output(["technodns", "system", "threads"]).strip()
 MEMORY = subprocess.check_output(["technodns", "system", "memory", "--total"]).strip()
