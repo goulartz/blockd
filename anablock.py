@@ -18,16 +18,15 @@ if os.path.exists(VERSION_F):
             print(f"{datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')}: Tabela sem alterações.")
             exit(0)
         else:
-          with open(VERSION_F, 'w') as f:
-            f.write(VERSION)
+            try:
+                subprocess.run(["/bin/cp", "/usr/local/etc/unbound/anablock.conf", "/usr/local/etc/unbound/anablock.conf.old"], check=True, stdout=subprocess.DEVNULL)
+            except:
+                pass
+            with open(VERSION_F, 'w') as f:
+                f.write(VERSION)
 else:
-  with open(VERSION_F, 'w') as f:
-    f.write(VERSION)
-
-try:
-    subprocess.run(["/bin/cp", "/usr/local/etc/unbound/anablock.conf", "/usr/local/etc/unbound/anablock.conf.old"], check=True, stdout=subprocess.DEVNULL)
-except:
-    pass
+    with open(VERSION_F, 'w') as f:
+        f.write(VERSION)
 
 try:
     status_output = subprocess.check_output(["/usr/local/sbin/unbound-control", "status"]).decode()
