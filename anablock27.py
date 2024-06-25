@@ -19,17 +19,16 @@ if os.path.isfile(VERSION_F) and os.path.getsize(VERSION_F) > 0:
             print("{}: Tabela sem alterações.".format(datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')))
             exit(0)
         else:
+            try:
+                subprocess.check_call(["/bin/cp", "/usr/local/etc/unbound/anablock.conf", "/usr/local/etc/unbound/anablock.conf.old"], stdout=subprocess.PIPE)
+            except:
+                pass
             with open(VERSION_F, 'w') as f:
                 f.write(VERSION)
 else:
   with open(VERSION_F, 'w') as f:
     f.write(VERSION)
-
-try:
-    subprocess.check_call(["/bin/cp", "/usr/local/etc/unbound/anablock.conf", "/usr/local/etc/unbound/anablock.conf.old"], stdout=subprocess.PIPE)
-except:
-    pass
-
+      
 try:
     status_output = subprocess.check_output(["/usr/local/sbin/unbound-control", "status"]).decode()
 except subprocess.CalledProcessError:
