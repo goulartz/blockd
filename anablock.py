@@ -26,7 +26,7 @@ else:
 
 try:
     subprocess.run(["/bin/cp", "/usr/local/etc/unbound/anablock.conf", "/usr/local/etc/unbound/anablock.conf.old"], check=True, stdout=subprocess.DEVNULL)
-else:
+except:
     pass
 
 try:
