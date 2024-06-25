@@ -25,6 +25,11 @@ else:
     f.write(VERSION)
 
 try:
+    subprocess.run(["/bin/cp", "/usr/local/etc/unbound/anablock.conf", "/usr/local/etc/unbound/anablock.conf.old"], check=True, stdout=subprocess.DEVNULL)
+else:
+    pass
+
+try:
     status_output = subprocess.check_output(["/usr/local/sbin/unbound-control", "status"]).decode()
 except subprocess.CalledProcessError:
     print(f"{datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S')}: Servidor com Broken Pipe.")
