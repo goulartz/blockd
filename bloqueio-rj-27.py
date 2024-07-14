@@ -7,10 +7,27 @@ import datetime
 APIURL_UNBOUND = "http://demo.cdn.tv.br/bloqueio-rj"
 CONF_UNBOUND = "/usr/local/etc/unbound/anablock.conf.rj"
 CONF_UNBOUND_T = "/usr/local/etc/unbound/anablock_t.conf"
-#APIURL_VERSION = "http://demo.cdn.tv.br/version_api"
-#VERSION_F = "/usr/local/etc/unbound/version_api.conf"
+APIURL_VERSION = "http://demo.cdn.tv.br/version_api"
+VERSION_F = "/usr/local/etc/unbound/version_api.conf"
 CPU = subprocess.check_output(["technodns", "system", "threads"]).strip()
 MEMORY = subprocess.check_output(["technodns", "system", "memory", "--total"]).strip()
+
+VERSION = subprocess.check_output(["/usr/local/bin/curl", "-k", "-s", APIURL_VERSION]).strip()
+if os.path.isfile(VERSION_F) and os.path.getsize(VERSION_F) > 0:
+    with open(VERSION_F, 'r') as f:
+        if VERSION == f.read().strip():
+            print("{}: Tabela sem alterações.".format(datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')))
+            exit(0)
+        else:
+            try:
+                subprocess.check_call(["/bin/cp", "/usr/local/etc/unbound/anablock.conf.rj", "/usr/local/etc/unbound/anablock.conf.rj.old"], stdout=subprocess.PIPE)
+            except:
+                pass
+            with open(VERSION_F, 'w') as f:
+                f.write(VERSION)
+else:
+  with open(VERSION_F, 'w') as f:
+    f.write(VERSION)
       
 try:
     status_output = subprocess.check_output(["/usr/local/sbin/unbound-control", "status"]).decode()
