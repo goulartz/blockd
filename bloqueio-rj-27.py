@@ -4,7 +4,7 @@ import os
 import subprocess
 import datetime
 
-APIURL_UNBOUND = "http://demo.cdn.tv.br/bloqueio-rj"
+APIURL_UNBOUND = "http://demo.cdn.tv.br/anablock.conf.rj"
 CONF_UNBOUND = "/usr/local/etc/unbound/anablock.conf.rj"
 CONF_UNBOUND_T = "/usr/local/etc/unbound/anablock_t.conf"
 APIURL_VERSION = "http://demo.cdn.tv.br/version_api"
