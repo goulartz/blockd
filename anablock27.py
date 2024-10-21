@@ -111,7 +111,7 @@ except subprocess.CalledProcessError as e:
     print("{}: Erro ao executar comando 'technodns recursive rewrite'.".format(datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S')))
 
 try:
-    subprocess.check_call(["/usr/local/sbin/unbound-control", "reload"], stdout=subprocess.PIPE)
+    subprocess.check_call(["/usr/local/bin/technodns/technodns", "recursive", "restart"], stdout=subprocess.PIPE)
     print("{}: Tabela de bloqueio atualizada.".format(datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S')))
 except subprocess.CalledProcessError as e:
-    print("{}: Erro ao executar comando 'unbound-control reload'.".format(datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S')))
+    print("{}: Erro ao executar comando 'technodns recursive restart'.".format(datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S')))
